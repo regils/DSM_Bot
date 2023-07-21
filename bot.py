@@ -44,7 +44,7 @@ async def send_message_to_users():
         else:
             await dp.current_state(user=user_id).set_state(botStates.repeat)
             
-        message_text = f"Привет, {user_name}! Пришло время опроса. Отчет будет сформирован через 15 минут и список ваших задач будет очищен."
+        message_text = f"Привет, {user_name}! Пришло время опроса. Отчет будет сформирован через 15 минут и список ваших задач будет очищен." # ЗДЕСЬ ИЗМЕНИТЬ ИНТЕРВАЛ (15 МИНУТ)
         await bot.send_message(user_id, message_text)
         keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
         keyboard.add(KeyboardButton('Да'), KeyboardButton('Нет'))
@@ -79,8 +79,8 @@ async def report():
         await update_tasks(user_id)
 
 async def scheduler():
-    schedule.add_job(send_message_to_users, "cron", day_of_week="fri", hour=14, minute=34)  # ЗДЕСЬ ЗАДАТЬ ВРЕМЯ НАЧАЛА ОПРОСА
-    schedule.add_job(report, "cron", day_of_week="fri", hour=14, minute=37)                 # ЗДЕСЬ ЗАДАТЬ ВРЕМЯ ФОРМИРОВАНИЯ ОТЧЕТА
+    schedule.add_job(send_message_to_users, "cron", day_of_week="tue", hour=10, minute=30)  # ЗДЕСЬ ЗАДАТЬ ВРЕМЯ НАЧАЛА ОПРОСА
+    schedule.add_job(report, "cron", day_of_week="tue", hour=10, minute=45)                 # ЗДЕСЬ ЗАДАТЬ ВРЕМЯ ФОРМИРОВАНИЯ ОТЧЕТА
     schedule.start()
     while True:
         await asyncio.sleep(1)
@@ -278,7 +278,7 @@ async def set_name(message: types.Message, state: FSMContext):
     id = message.from_user.id
     name = message.text
     await message.answer(f"Приятно познакомиться, {name}!")
-    await message.answer("Опрос начнется во вторник в 15:00. Вы можете заполнить список задач заранее, используя команду /dsm")  # ЗДЕСЬ ИЗМЕНИТЬ ВРЕМЯ
+    await message.answer("Опрос начнется во вторник в 10:30. Вы можете заполнить список задач заранее, используя команду /dsm")  # ЗДЕСЬ ИЗМЕНИТЬ ВРЕМЯ (вторник в 10:30)
     await create_profile(user_id=id, user_name=name)
     await update_name(user_id=message.from_user.id, user_name=message.text)
     await state.reset_state()
